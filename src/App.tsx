@@ -64,27 +64,117 @@ export default function Portfolio() {
       <a id="top" />
       <section id="about" className="max-w-4xl mx-auto px-5 py-14 md:py-20">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
-          {/* Avatar placeholder */}
-          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center select-none">
-            <span className="text-3xl md:text-4xl font-semibold">TJ</span>
+          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden select-none">
+            <img
+              key={dark ? "dark" : "light"} // re-render to trigger animation
+              src={dark ? "/avatar-dark.png" : "/avatar-light.png"}
+              alt="Teshan Jayakody avatar"
+              className="w-full h-full object-cover transition-all duration-500 ease-in-out transform hover:scale-105 opacity-100 animate-fade-in"
+            />
           </div>
           <div className="flex-1">
             <h1 className="text-3xl md:text-4xl font-semibold leading-tight tracking-tight mb-3">
               Hi, I’m Teshan. <br />
             </h1>
             <p className="text-neutral-700 dark:text-neutral-300 max-w-2xl">
-              Minimalist by taste, product-thinker by practice. I bridge <strong>business analysis</strong>, 
-              <strong> UX documentation</strong>, and a foundation in <strong>software engineering</strong> to help teams ship clearer, 
-              faster, and with confidence.
+              At the intersection of product, UX, and engineering — I help ideas become clear, usable, and real.
             </p>
+            <ul className="list-disc pl-6 text-neutral-700 dark:text-neutral-300 mt-3 space-y-1">
+              <li><strong>2+ years</strong> of experience in tech.</li>
+              <li>
+                Currently working as a Business Analyst @{" "}
+                <a
+                  href="https://www.xeynergy.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                 className="text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors font-medium"
+                >
+                <strong>Xeynergy™</strong>
+                </a>
+              </li>
+              <li className="relative">
+                Proud Madridista —{" "}
+                <button
+                  onClick={() => {
+                    // Create overlay
+                    const overlay = document.createElement("div");
+                    overlay.style.position = "fixed";
+                    overlay.style.top = "0";
+                    overlay.style.left = "0";
+                    overlay.style.width = "100vw";
+                    overlay.style.height = "100vh";
+                    overlay.style.background = "rgba(0,0,0,0.4)";
+                    overlay.style.backdropFilter = "blur(5px)";
+                    overlay.style.opacity = "0";
+                    overlay.style.transition = "opacity 0.3s ease-in-out";
+                    overlay.style.zIndex = "9998";
+                    document.body.appendChild(overlay);
+
+                    // Create container
+                    const container = document.createElement("div");
+                    container.style.position = "fixed";
+                    container.style.top = "50%";
+                    container.style.left = "50%";
+                    container.style.transform = "translate(-50%, -50%) scale(0.9)";
+                    container.style.display = "flex";
+                    container.style.flexDirection = "column";
+                    container.style.alignItems = "center";
+                    container.style.opacity = "0";
+                    container.style.transition = "opacity 0.3s ease-in-out, transform 0.4s ease-in-out";
+                    container.style.zIndex = "9999";
+
+                    // Logo
+                    const img = document.createElement("img");
+                    img.src = "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg";
+                    img.alt = "Real Madrid logo";
+                    img.style.width = "120px";
+
+                    // Text
+                    const text = document.createElement("span");
+                    text.textContent = "¡Hala Madrid!";
+                    text.style.color = "white";
+                    text.style.fontSize = "1.5rem";
+                    text.style.fontWeight = "600";
+                    text.style.marginTop = "12px";
+                    text.style.textShadow = "0 2px 6px rgba(0,0,0,0.5)";
+
+                    container.appendChild(img);
+                    container.appendChild(text);
+                    document.body.appendChild(container);
+
+                    // Trigger fade-in
+                    requestAnimationFrame(() => {
+                      overlay.style.opacity = "1";
+                      container.style.opacity = "1";
+                      container.style.transform = "translate(-50%, -50%) scale(1)";
+                    });
+
+                    // Fade-out and cleanup
+                    setTimeout(() => {
+                      overlay.style.opacity = "0";
+                      container.style.opacity = "0";
+                      container.style.transform = "translate(-50%, -50%) scale(0.8)";
+                      setTimeout(() => {
+                        overlay.remove();
+                        container.remove();
+                      }, 500);
+                    }, 1500);
+                  }}
+                  className="text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors font-medium cursor-pointer"
+                >
+                  <strong>¡Hala Madrid Y Nada Más!</strong>
+                </button>
+              </li>
+
+            </ul>
             <div className="mt-5 flex flex-wrap gap-2">
-              <a href="mailto:hello@example.com" className="inline-flex items-center gap-2 text-sm border px-3 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
+              <a href="mailto:teshan@jayakodylk.com" className="inline-flex items-center gap-2 text-sm border px-3 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
                 <Mail className="w-4 h-4" /> Email
               </a>
               <a href="https://www.linkedin.com/in/teshanjayakody/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm border px-3 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
                 <Linkedin className="w-4 h-4" /> LinkedIn <ArrowUpRight className="w-4 h-4" />
               </a>
-              <a href="https://github.com/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm border px-3 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
+              <a href="https://github.com/teshanj7" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm border px-3 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
                 <Github className="w-4 h-4" /> GitHub <ArrowUpRight className="w-4 h-4" />
               </a>
             </div>
