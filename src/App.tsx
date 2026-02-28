@@ -138,7 +138,11 @@ export default function Portfolio() {
           <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden select-none">
             <img
               key={dark ? "dark" : "light"} // re-render to trigger animation
-              src={dark ? "/avatar-dark.png" : "/avatar-light.png"}
+              src={
+                dark
+                  ? `${import.meta.env.BASE_URL}avatar-dark.png`
+                  : `${import.meta.env.BASE_URL}avatar-light.png`
+              }
               alt="Teshan Jayakody avatar"
               className="w-full h-full object-cover transition-all duration-500 ease-in-out transform hover:scale-105 opacity-100 animate-fade-in"
             />
@@ -431,7 +435,7 @@ export default function Portfolio() {
         <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap gap-3">
           {/* Primary Button */}
           <a
-            href="https://calendly.com/YOUR_USERNAME/YOUR_EVENT"
+            href="https://calendly.com/teshan-jayakodylk/30min"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black hover:opacity-90 transition"
