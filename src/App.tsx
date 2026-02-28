@@ -110,11 +110,8 @@ export default function Portfolio() {
             <a className="hover:opacity-70" href="#education">
               Education
             </a>
-            <a className="hover:opacity-70" href="#projects">
-              Projects
-            </a>
             <a className="hover:opacity-70" href="#contact">
-              Contact
+              Connect
             </a>
           </nav>
           <div className="flex items-center gap-2">
