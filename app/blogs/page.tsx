@@ -1,59 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "../components/button";
-import { Card, CardContent } from "../components/card";
-import { getAllBlogs, type BlogMeta } from "../utils/blogs";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Card, CardContent } from "@/components/card";
+import { getAllBlogs } from "@/utils/blogs";
 
-interface BlogsProps {
-  dark: boolean;
-  setDark: (val: boolean) => void;
-}
+export const metadata: Metadata = {
+  title: "Blogs",
+  description:
+    "Thoughts on business analysis, product, and the space where people and technology meet.",
+  alternates: { canonical: "/blogs" },
+  openGraph: {
+    title: "Blogs — Teshan Jayakody",
+    description: "Thoughts on business analysis, product, and the space where people and technology meet.",
+    url: "/blogs",
+  },
+  twitter: {
+    title: "Blogs — Teshan Jayakody",
+    description: "Thoughts on business analysis, product, and the space where people and technology meet.",
+  },
+};
 
 function formatDate(dateStr: string): string {
   if (!dateStr) return "";
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
-export default function Blogs({ dark, setDark }: BlogsProps) {
-  const [blogs, setBlogs] = useState<BlogMeta[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAllBlogs().then((b) => {
-      setBlogs(b);
-      setLoading(false);
-    });
-  }, []);
+export default function BlogsPage() {
+  const blogs = getAllBlogs();
 
   return (
     <div
       style={{ fontFamily: "Poppins, sans-serif" }}
       className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-neutral-100 flex flex-col"
     >
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-        rel="stylesheet"
-      />
-
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-neutral-950/60 border-b border-neutral-200 dark:border-neutral-800">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link
-            to="/"
+            href="/"
             className="font-semibold tracking-tight hover:opacity-70 transition-opacity"
           >
             Teshan Jayakody
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle theme"
-            onClick={() => setDark(!dark)}
-          >
-            {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </Button>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -64,24 +57,19 @@ export default function Blogs({ dark, setDark }: BlogsProps) {
           A space where I write about things I find interesting — work, experiences, and everything in between.
         </p>
 
-        {loading && (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>
-        )}
-
-        {!loading && blogs.length === 0 && (
+        {blogs.length === 0 && (
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
             Nothing here yet — check back soon.
           </p>
         )}
 
-        {!loading && blogs.length > 0 && (
+        {blogs.length > 0 && (
           <div className="space-y-4">
             {blogs.map((blog) => (
-              <Link key={blog.slug} to={`/blogs/${blog.slug}`} className="block group">
+              <Link key={blog.slug} href={`/blogs/${blog.slug}`} className="block group">
                 <Card className="overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
                   <CardContent className="p-0">
                     <div className="flex flex-col sm:flex-row">
-                      {/* Thumbnail */}
                       {blog.thumbnail && (
                         <div className="sm:w-44 sm:shrink-0 h-40 sm:h-auto">
                           <img
@@ -91,8 +79,6 @@ export default function Blogs({ dark, setDark }: BlogsProps) {
                           />
                         </div>
                       )}
-
-                      {/* Text */}
                       <div className="flex flex-col justify-center gap-1.5 p-5">
                         <span className="text-xs text-neutral-400 dark:text-neutral-500">
                           {formatDate(blog.date)}

@@ -1,34 +1,44 @@
-import React from "react";
+import type { Metadata } from "next";
+import Link from "next/link";
 import {
-  Moon,
-  Sun,
   ArrowUpRight,
   Mail,
   Linkedin,
   Github,
   BookOpen,
-  PenLine,
   CalendarDays,
+  PenLine,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Card, CardContent } from "../components/card";
-import { Button } from "../components/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { MadridButton } from "@/components/MadridButton";
+import { Card, CardContent } from "@/components/card";
 
-interface AboutProps {
-  dark: boolean;
-  setDark: (val: boolean) => void;
-}
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Business Analyst with 2+ years in product, UX, and engineering. Currently at Xeynergy.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About — Teshan Jayakody",
+    description: "Business Analyst with 2+ years in product, UX, and engineering.",
+    url: "/about",
+  },
+  twitter: {
+    title: "About — Teshan Jayakody",
+    description: "Business Analyst with 2+ years in product, UX, and engineering.",
+  },
+};
 
-export default function About({ dark, setDark }: AboutProps) {
-  const Section = ({
-    id,
-    title,
-    children,
-  }: {
-    id: string;
-    title: string;
-    children: React.ReactNode;
-  }) => (
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
     <section
       id={id}
       className="scroll-mt-28 w-full max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14"
@@ -39,18 +49,20 @@ export default function About({ dark, setDark }: AboutProps) {
       <div className="space-y-4 text-base leading-relaxed">{children}</div>
     </section>
   );
+}
 
-  const Item = ({
-    heading,
-    sub,
-    meta,
-    children,
-  }: {
-    heading: string;
-    sub?: string;
-    meta?: string;
-    children?: React.ReactNode;
-  }) => (
+function Item({
+  heading,
+  sub,
+  meta,
+  children,
+}: {
+  heading: string;
+  sub?: string;
+  meta?: string;
+  children?: React.ReactNode;
+}) {
+  return (
     <Card className="border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       <CardContent className="p-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -76,16 +88,40 @@ export default function About({ dark, setDark }: AboutProps) {
       </CardContent>
     </Card>
   );
+}
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Teshan Jayakody",
+  jobTitle: "Business Analyst",
+  url: "https://teshanjayakody.com",
+  sameAs: [
+    "https://www.linkedin.com/in/teshanjayakody/",
+    "https://github.com/teshanj7",
+    "https://medium.com/@teshanj",
+    "https://x.com/TeshTweet20",
+    "https://www.instagram.com/teshann_/",
+  ],
+};
+
+export default function AboutPage() {
   return (
     <div
       style={{ fontFamily: "Poppins, sans-serif" }}
       className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-neutral-100"
     >
-      {/* Header / Nav */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-neutral-950/60 border-b border-neutral-200 dark:border-neutral-800">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="font-semibold tracking-tight hover:opacity-70 transition-opacity">
+          <Link
+            href="/"
+            className="font-semibold tracking-tight hover:opacity-70 transition-opacity"
+          >
             Teshan Jayakody
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -95,36 +131,29 @@ export default function About({ dark, setDark }: AboutProps) {
             <a className="hover:opacity-70" href="#education">Education</a>
             <a className="hover:opacity-70" href="#contact">Connect</a>
           </nav>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle theme"
-            onClick={() => setDark(!dark)}
-          >
-            {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </Button>
+          <ThemeToggle />
         </div>
       </header>
 
       {/* Hero */}
       <a id="top" />
       <section id="about" className="max-w-4xl mx-auto px-5 py-14 md:py-20">
-        <div className="flex flex-col md:flex-row items-center md:items-center text-center md:text-left gap-6 md:gap-10">
+        <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-6 md:gap-10">
           <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden select-none">
             <img
-              key={dark ? "dark" : "light"}
-              src={
-                dark
-                  ? `${import.meta.env.BASE_URL}avatar-dark.png`
-                  : `${import.meta.env.BASE_URL}avatar-light.png`
-              }
-              alt="Teshan Jayakody avatar"
-              className="w-full h-full object-cover transition-all duration-500 ease-in-out transform hover:scale-105 opacity-100 animate-fade-in"
+              src="/avatar-dark.png"
+              alt="Teshan Jayakody"
+              className="hidden dark:block w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+            <img
+              src="/avatar-light.png"
+              alt="Teshan Jayakody"
+              className="block dark:hidden w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
           </div>
           <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-tight mb-3">
-              Hi, I'm Teshan. <br />
+              Hi, I&apos;m Teshan.
             </h1>
             <p className="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto md:mx-0 text-base sm:text-lg">
               At the intersection of product, UX, and engineering — I help ideas
@@ -145,72 +174,8 @@ export default function About({ dark, setDark }: AboutProps) {
                   <strong>Xeynergy™</strong>
                 </a>
               </li>
-              <li className="relative">
-                Proud Madridista —{" "}
-                <button
-                  onClick={() => {
-                    const overlay = document.createElement("div");
-                    overlay.style.position = "fixed";
-                    overlay.style.top = "0";
-                    overlay.style.left = "0";
-                    overlay.style.width = "100vw";
-                    overlay.style.height = "100vh";
-                    overlay.style.background = "rgba(0,0,0,0.4)";
-                    overlay.style.backdropFilter = "blur(5px)";
-                    overlay.style.opacity = "0";
-                    overlay.style.transition = "opacity 0.3s ease-in-out";
-                    overlay.style.zIndex = "9998";
-                    document.body.appendChild(overlay);
-
-                    const container = document.createElement("div");
-                    container.style.position = "fixed";
-                    container.style.top = "50%";
-                    container.style.left = "50%";
-                    container.style.transform = "translate(-50%, -50%) scale(0.9)";
-                    container.style.display = "flex";
-                    container.style.flexDirection = "column";
-                    container.style.alignItems = "center";
-                    container.style.opacity = "0";
-                    container.style.transition = "opacity 0.3s ease-in-out, transform 0.4s ease-in-out";
-                    container.style.zIndex = "9999";
-
-                    const img = document.createElement("img");
-                    img.src = "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg";
-                    img.alt = "Real Madrid logo";
-                    img.style.width = "120px";
-
-                    const text = document.createElement("span");
-                    text.textContent = "¡Hala Madrid!";
-                    text.style.color = "white";
-                    text.style.fontSize = "1.5rem";
-                    text.style.fontWeight = "600";
-                    text.style.marginTop = "12px";
-                    text.style.textShadow = "0 2px 6px rgba(0,0,0,0.5)";
-
-                    container.appendChild(img);
-                    container.appendChild(text);
-                    document.body.appendChild(container);
-
-                    requestAnimationFrame(() => {
-                      overlay.style.opacity = "1";
-                      container.style.opacity = "1";
-                      container.style.transform = "translate(-50%, -50%) scale(1)";
-                    });
-
-                    setTimeout(() => {
-                      overlay.style.opacity = "0";
-                      container.style.opacity = "0";
-                      container.style.transform = "translate(-50%, -50%) scale(0.8)";
-                      setTimeout(() => {
-                        overlay.remove();
-                        container.remove();
-                      }, 500);
-                    }, 1500);
-                  }}
-                  className="text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors font-medium cursor-pointer"
-                >
-                  <strong>¡Hala Madrid Y Nada Más!</strong>
-                </button>
+              <li>
+                Proud Madridista — <MadridButton />
               </li>
             </ul>
             <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-start gap-3">
@@ -242,7 +207,7 @@ export default function About({ dark, setDark }: AboutProps) {
                 <ArrowUpRight className="w-4 h-4" />
               </a>
               <Link
-                to="/blogs"
+                href="/blogs"
                 className="w-full sm:w-auto inline-flex justify-center items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
               >
                 <PenLine className="w-4 h-4" /> Blogs{" "}
@@ -305,39 +270,29 @@ export default function About({ dark, setDark }: AboutProps) {
           leveraging AI for task automation, and researching on tools & techniques to
           optimize development workflows.
         </Item>
-        <Item
-          heading="Rootcode"
-          sub="Intern Business Analyst"
-          meta="2024 Sept – 2025 Sept"
-        >
+        <Item heading="Rootcode" sub="Intern Business Analyst" meta="2024 Sept – 2025 Sept">
           Contributed to client projects in the Healthcare and Analytics domains within
           the North American region, working in an Agile environment. Supported
           requirement mapping, stakeholder coordination, documentation, and facilitated
           SCRUM ceremonies. Collaborated with cross-functional teams to deliver features
-          on time and improve productivity. <br /> <br /> Played the Business Analyst &
-          Product Owner roles in Skapp that won Awards at NBQSA 2025 and was also
-          recognized at the Asia Pacific ICT Awards 2025. Contributed to requirement
-          analysis, roadmap definition, market research, competitor analysis, and close
-          collaboration with UX teams on wireframing and usability testing. Leveraged
-          tools such as Jira and GitHub Projects for effective project tracking and
-          visibility.
+          on time and improve productivity.
+          <br />
+          <br />
+          Played the Business Analyst & Product Owner roles in Skapp that won Awards at
+          NBQSA 2025 and was also recognized at the Asia Pacific ICT Awards 2025.
+          Contributed to requirement analysis, roadmap definition, market research,
+          competitor analysis, and close collaboration with UX teams on wireframing and
+          usability testing. Leveraged tools such as Jira and GitHub Projects for
+          effective project tracking and visibility.
         </Item>
-        <Item
-          heading="LB Finance PLC"
-          sub="Associate Software Engineer"
-          meta="2024 Mar – 2024 Sept"
-        >
+        <Item heading="LB Finance PLC" sub="Associate Software Engineer" meta="2024 Mar – 2024 Sept">
           Worked as a Full-Stack Developer on Eclipse, the enterprise core system
           supporting business operations. Contributed to the Deposit and General Ledger
           modules using Angular and ASP.NET, while designing and optimizing SQL Server
           procedures and queries. Collaborated within an Agile environment, conducted tech
           talks, and supported intern engineers through knowledge-sharing sessions.
         </Item>
-        <Item
-          heading="LB Finance PLC"
-          sub="Intern Software Engineer"
-          meta="2023 Aug – 2024 Feb"
-        >
+        <Item heading="LB Finance PLC" sub="Intern Software Engineer" meta="2023 Aug – 2024 Feb">
           The very first experience in a <b>tech role!</b> Worked as an Intern Full-Stack
           Developer on Eclipse, the core enterprise system supporting key business
           operations. Developed frontend components using Angular and backend services
@@ -361,11 +316,7 @@ export default function About({ dark, setDark }: AboutProps) {
           principles, supported by hands-on experience through academic and
           industry-based projects.
         </Item>
-        <Item
-          heading="Advanced Level & Ordinary Level"
-          sub="St. Peter's College, Colombo 04"
-          meta="2006 – 2019"
-        >
+        <Item heading="Advanced Level & Ordinary Level" sub="St. Peter's College, Colombo 04" meta="2006 – 2019">
           Completed primary and secondary education from Grade 1 to Grade 13. Pursued
           Advanced Level studies in the Physical Science stream. Actively participated in
           extracurricular activities, contributing to teamwork, and overall personal
@@ -378,7 +329,7 @@ export default function About({ dark, setDark }: AboutProps) {
         <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
           Whether you need a Business Analyst to translate business needs into clear
           solutions, support product strategy, or collaborate on delivering meaningful
-          outcomes, I'm always open to new opportunities.
+          outcomes, I&apos;m always open to new opportunities.
         </p>
         <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap gap-3">
           <a

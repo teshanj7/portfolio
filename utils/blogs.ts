@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 export interface BlogMeta {
   slug: string;
   title: string;
@@ -10,7 +13,8 @@ export interface Blog extends BlogMeta {
   content: string;
 }
 
-// Simple frontmatter parser — no external dependency needed
+const blogsDir = path.join(process.cwd(), "content/blogs");
+
 function parseFrontmatter(raw: string): { data: Record<string, string>; content: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { data: {}, content: raw };
@@ -27,56 +31,43 @@ function parseFrontmatter(raw: string): { data: Record<string, string>; content:
   return { data, content: match[2] };
 }
 
-// Derive slug from file path: "...blogs/my-post.md" → "my-post"
-function pathToSlug(path: string): string {
-  return path.split("/").pop()!.replace(/\.md$/, "");
-}
-
-// Estimate reading time (words / 200 wpm)
 export function readingTime(content: string): string {
   const words = content.trim().split(/\s+/).length;
   const minutes = Math.ceil(words / 200);
   return `${minutes} min read`;
 }
 
-// Load all blogs sorted by date descending
-const modules = import.meta.glob("../content/blogs/*.md", {
-  query: "?raw",
-  import: "default",
-});
+export function getAllBlogs(): BlogMeta[] {
+  const files = fs.readdirSync(blogsDir).filter((f) => f.endsWith(".md"));
 
-export async function getAllBlogs(): Promise<BlogMeta[]> {
-  const blogs: BlogMeta[] = [];
-
-  for (const [path, load] of Object.entries(modules)) {
-    const raw = (await load()) as string;
+  const blogs = files.map((file) => {
+    const raw = fs.readFileSync(path.join(blogsDir, file), "utf-8");
     const { data } = parseFrontmatter(raw);
-    blogs.push({
-      slug: pathToSlug(path),
+    return {
+      slug: file.replace(/\.md$/, ""),
       title: data.title ?? "Untitled",
       description: data.description ?? "",
       date: data.date ?? "",
       thumbnail: data.thumbnail ?? "",
-    });
-  }
+    };
+  });
 
   return blogs.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export async function getBlogBySlug(slug: string): Promise<Blog | null> {
-  for (const [path, load] of Object.entries(modules)) {
-    if (pathToSlug(path) === slug) {
-      const raw = (await load()) as string;
-      const { data, content } = parseFrontmatter(raw);
-      return {
-        slug,
-        title: data.title ?? "Untitled",
-        description: data.description ?? "",
-        date: data.date ?? "",
-        thumbnail: data.thumbnail ?? "",
-        content,
-      };
-    }
-  }
-  return null;
+export function getBlogBySlug(slug: string): Blog | null {
+  const filePath = path.join(blogsDir, `${slug}.md`);
+  if (!fs.existsSync(filePath)) return null;
+
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = parseFrontmatter(raw);
+
+  return {
+    slug,
+    title: data.title ?? "Untitled",
+    description: data.description ?? "",
+    date: data.date ?? "",
+    thumbnail: data.thumbnail ?? "",
+    content,
+  };
 }
