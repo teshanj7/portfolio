@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Blogs from "./pages/Blogs";
+import BlogPost from "./pages/BlogPost";
 
 export default function App() {
   const [dark, setDark] = useState(true);
@@ -18,6 +19,7 @@ export default function App() {
       <Route path="/" element={<Index dark={dark} setDark={setDark} />} />
       <Route path="/about" element={<About dark={dark} setDark={setDark} />} />
       <Route path="/blogs" element={<Blogs dark={dark} setDark={setDark} />} />
+      <Route path="/blogs/:slug" element={<BlogPost dark={dark} setDark={setDark} />} />
     </Routes>
   );
 }
