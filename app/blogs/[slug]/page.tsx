@@ -141,8 +141,15 @@ export default async function BlogPostPage({ params }: Props) {
         <hr className="border-neutral-200 dark:border-neutral-800 mb-10" />
 
         {/* Markdown body */}
-        <div className="prose prose-neutral max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-neutral-800 prose-a:underline-offset-4 prose-code:text-sm prose-code:bg-neutral-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-neutral-100 prose-pre:border prose-pre:border-neutral-200 prose-img:rounded-xl prose-img:w-full prose-hr:border-neutral-200 dark:prose-invert dark:prose-code:bg-neutral-800 dark:prose-pre:bg-neutral-800 dark:prose-pre:border-neutral-700 dark:prose-hr:border-neutral-800">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <div className="prose prose-neutral max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-neutral-800 dark:prose-a:text-neutral-200 prose-a:underline-offset-4 prose-code:text-sm prose-code:bg-neutral-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-neutral-100 prose-pre:border prose-pre:border-neutral-200 prose-img:rounded-xl prose-img:w-full prose-hr:border-neutral-200 dark:prose-invert dark:prose-code:bg-neutral-800 dark:prose-pre:bg-neutral-800 dark:prose-pre:border-neutral-700 dark:prose-hr:border-neutral-800">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              img: ({ src, alt }) => (
+                <img src={assetPath(typeof src === "string" ? src : "")} alt={alt ?? ""} className="rounded-xl w-full" />
+              ),
+            }}
+          >
             {blog.content}
           </ReactMarkdown>
         </div>

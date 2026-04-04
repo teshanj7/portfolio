@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  icons: { icon: "/tj7-favicon.png" },
+  icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/tj7-favicon.png` },
   openGraph: {
     type: "website",
     siteName: siteConfig.name,
