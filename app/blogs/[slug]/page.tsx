@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { BackToTop } from "@/components/BackToTop";
 import { getAllBlogs, getBlogBySlug, readingTime } from "@/utils/blogs";
+import { assetPath } from "@/utils/asset";
 import { siteConfig } from "@/utils/site";
 
 interface Props {
@@ -130,7 +131,7 @@ export default async function BlogPostPage({ params }: Props) {
         {blog.thumbnail && (
           <div className="w-full rounded-xl overflow-hidden mb-10 aspect-video">
             <img
-              src={blog.thumbnail}
+              src={assetPath(blog.thumbnail)}
               alt={blog.title}
               className="w-full h-full object-cover"
             />

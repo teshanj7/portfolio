@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   output: "export",
   trailingSlash: true,
-  basePath: "/portfolio-teshan",
+  basePath: "/portfolio",
   images: {
     unoptimized: true,
   },

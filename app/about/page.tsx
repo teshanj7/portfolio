@@ -10,6 +10,7 @@ import {
   PenLine,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { assetPath } from "@/utils/asset";
 import { MadridButton } from "@/components/MadridButton";
 import { Card, CardContent } from "@/components/card";
 
@@ -141,12 +142,12 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-6 md:gap-10">
           <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden select-none">
             <img
-              src="/avatar-dark.png"
+              src={assetPath("/avatar-dark.png")}
               alt="Teshan Jayakody"
               className="hidden dark:block w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
             <img
-              src="/avatar-light.png"
+              src={assetPath("/avatar-light.png")}
               alt="Teshan Jayakody"
               className="block dark:hidden w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />

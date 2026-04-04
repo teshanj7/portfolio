@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card, CardContent } from "@/components/card";
 import { getAllBlogs } from "@/utils/blogs";
+import { assetPath } from "@/utils/asset";
 
 export const metadata: Metadata = {
   title: "Blogs",
@@ -73,7 +74,7 @@ export default function BlogsPage() {
                       {blog.thumbnail && (
                         <div className="sm:w-44 sm:shrink-0 h-40 sm:h-auto">
                           <img
-                            src={blog.thumbnail}
+                            src={assetPath(blog.thumbnail)}
                             alt={blog.title}
                             className="w-full h-full object-cover"
                           />

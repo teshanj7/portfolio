@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { assetPath } from "@/utils/asset";
 
 export const metadata: Metadata = {
   title: "Teshan Jayakody",
@@ -24,12 +25,12 @@ export default function IndexPage() {
         {/* Avatar — CSS-switched, no JS needed */}
         <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden mb-5 select-none">
           <img
-            src="/avatar-dark.png"
+            src={assetPath("/avatar-dark.png")}
             alt="Teshan Jayakody"
             className="hidden dark:block w-full h-full object-cover hover:scale-105 transition-transform duration-500"
           />
           <img
-            src="/avatar-light.png"
+            src={assetPath("/avatar-light.png")}
             alt="Teshan Jayakody"
             className="block dark:hidden w-full h-full object-cover hover:scale-105 transition-transform duration-500"
           />
