@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://teshanj7.github.io/portfolio-teshan/sitemap.xml
