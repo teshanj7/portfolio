@@ -1,153 +1,410 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllBlogs } from "@/utils/blogs";
-import { assetPath } from "@/utils/asset";
+import {
+  ArrowUpRight,
+  Mail,
+  Linkedin,
+  Github,
+  CalendarDays,
+  PenLine,
+} from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { NoBodyScroll } from "@/components/NoBodyScroll";
+import { assetPath } from "@/utils/asset";
+import { MadridButton } from "@/components/MadridButton";
+import { Card, CardContent } from "@/components/card";
+import { getAllBlogs } from "@/utils/blogs";
 
 export const metadata: Metadata = {
   title: "Teshan Jayakody",
   description: "Business Analyst at the intersection of product, UX, and engineering.",
   alternates: { canonical: "/" },
+  openGraph: {
+    title: "Teshan Jayakody",
+    description: "Business Analyst at the intersection of product, UX, and engineering.",
+    url: "/",
+  },
+  twitter: {
+    title: "Teshan Jayakody",
+    description: "Business Analyst at the intersection of product, UX, and engineering.",
+  },
 };
 
-function formatMonthYear(dateStr: string): string {
-  if (!dateStr) return "";
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
-
-function LinkedInIcon() {
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
+    <section
+      id={id}
+      className="scroll-mt-28 w-full max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14"
+    >
+      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6">
+        {title}
+      </h2>
+      <div className="space-y-4 text-base leading-relaxed">{children}</div>
+    </section>
   );
 }
 
-function InstagramIcon() {
+function Item({
+  heading,
+  sub,
+  meta,
+  children,
+}: {
+  heading: string;
+  sub?: string;
+  meta?: string;
+  children?: React.ReactNode;
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-    </svg>
-  );
-}
-
-function XIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-export default function IndexPage() {
-  const blogs = getAllBlogs();
-  const latestBlog = blogs[0] ?? null;
-
-  return (
-    <div className="h-dvh overflow-y-auto overflow-x-hidden bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col items-center">
-      <NoBodyScroll />
-      {/* Theme toggle — top right */}
-      <div className="fixed top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
-
-      <main className="flex-1 flex flex-col items-center justify-center px-6 sm:px-10 py-8 w-full max-w-5xl">
-        {/* Avatar */}
-        <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden mb-8 sm:mb-10 border border-neutral-300 dark:border-neutral-700 select-none">
-          <img
-            src={assetPath("/avatar-dark.png")}
-            alt="Teshan Jayakody"
-            className="hidden dark:block w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-          />
-          <img
-            src={assetPath("/avatar-light.png")}
-            alt="Teshan Jayakody"
-            className="block dark:hidden w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-          />
+    <Card className="border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+      <CardContent className="p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <h3 className="font-medium text-lg">{heading}</h3>
+            {sub && (
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                {sub}
+              </p>
+            )}
+          </div>
+          {meta && (
+            <span className="self-start sm:self-auto text-xs rounded-full px-3 py-1 border border-neutral-200 dark:border-neutral-700 whitespace-nowrap">
+              {meta}
+            </span>
+          )}
         </div>
+        {children && (
+          <div className="mt-3 text-sm text-neutral-700 dark:text-neutral-300">
+            {children}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
-        {/* Name */}
-        <p className="text-2xl sm:text-3xl text-neutral-500 dark:text-neutral-400 mb-4 sm:mb-5 tracking-wide">
-          Teshan Jayakody
-        </p>
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Teshan Jayakody",
+  jobTitle: "Business Analyst",
+  url: "https://teshanjayakody.com",
+  sameAs: [
+    "https://www.linkedin.com/in/teshanjayakody/",
+    "https://github.com/teshanj7",
+    "https://medium.com/@teshanj",
+    "https://x.com/TeshTweet20",
+    "https://www.instagram.com/teshann_/",
+  ],
+};
 
-        {/* Heading */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium leading-tight tracking-tight mb-4 sm:mb-6 text-center">
-          Business Analyst &amp;{" "}
-          <em style={{ fontFamily: "'DM Serif Display', serif" }} className="font-normal not-italic">
-            <span style={{ fontStyle: "italic" }}>a UX enthusiast.</span>
-          </em>
-        </h1>
+export default async function IndexPage() {
+  const latestBlog = getAllBlogs()[0];
+  return (
+    <div className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-neutral-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      <a id="top" />
 
-        {/* Description */}
-        <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base md:text-lg leading-relaxed mb-10 sm:mb-14 text-center max-w-lg">
-          Helping ideas become clear, usable, and real at the intersection
-          of product, UX, and engineering.
-        </p>
-
-        {/* Nav links */}
-        <nav className="w-full max-w-2xl">
-          <Link
-            href="/about"
-            className="flex items-center justify-between py-3 sm:py-4 border-t border-neutral-200 dark:border-neutral-800 group hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
+      {/* Sticky header */}
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-neutral-950/60 border-b border-neutral-200 dark:border-neutral-800">
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <a
+            href="#top"
+            className="font-semibold tracking-tight hover:opacity-70 transition-opacity"
           >
-            <div>
-              <div className="font-medium text-sm sm:text-base">About me</div>
-              <div className="text-xs sm:text-sm text-neutral-500 mt-0.5">Skills, experience &amp; background</div>
-            </div>
-            <span className="text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors text-lg">→</span>
-          </Link>
+            Teshan Jayakody
+          </a>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <a className="hover:opacity-70" href="#skills">Skills</a>
+            <a className="hover:opacity-70" href="#experience">Experience</a>
+            <a className="hover:opacity-70" href="#education">Education</a>
+            <a className="hover:opacity-70" href="#blogs">Blogs</a>
+            <a className="hover:opacity-70" href="#contact">Connect</a>
+          </nav>
+          <ThemeToggle />
+        </div>
+      </header>
 
+
+      {/* About */}
+      <section id="about" className="max-w-4xl mx-auto px-5 py-14 md:py-20">
+        <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-6 md:gap-10">
+          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border border-neutral-200 dark:border-neutral-800 overflow-hidden select-none">
+            <img
+              src={assetPath("/avatar-dark.png")}
+              alt="Teshan Jayakody"
+              className="hidden dark:block w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+            <img
+              src={assetPath("/avatar-light.png")}
+              alt="Teshan Jayakody"
+              className="block dark:hidden w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-tight mb-3">
+              Hi, I&apos;m Teshan.
+            </h2>
+            <p className="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto md:mx-0 text-base sm:text-lg">
+              At the intersection of product, UX, and engineering — I help ideas
+              become clear, usable, and real.
+            </p>
+            <ul className="list-disc text-left mx-auto md:mx-0 pl-5 mt-3 space-y-2 text-sm sm:text-base text-neutral-700 dark:text-neutral-300">
+              <li>
+                <strong>2+ years</strong> of experience in tech.
+              </li>
+              <li>
+                Currently working as a Business Analyst @{" "}
+                <a
+                  href="https://www.xeynergy.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors font-medium"
+                >
+                  <strong>Xeynergy™</strong>
+                </a>
+              </li>
+              <li>
+                Proud Madridista — <MadridButton />
+              </li>
+            </ul>
+            <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-start gap-3">
+              <a
+                href="https://www.linkedin.com/in/teshanjayakody/"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+              >
+                <Linkedin className="w-4 h-4" /> LinkedIn{" "}
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+              <a
+                href="https://github.com/teshanj7"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+              >
+                <Github className="w-4 h-4" /> GitHub{" "}
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+              <a
+                href="https://medium.com/@teshanj"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+              >
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 fill-current">
+                  <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                </svg>
+                Medium{" "}
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <Section id="skills" title="Skills">
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Item heading="Business Analysis" sub="Requirements • Research • Analyze">
+            Identify business needs and turn them into clear, practical solutions. Work
+            closely with stakeholders to gather and understand requirements, analyze
+            existing processes, and define structured acceptance criteria. Conduct product
+            and market research to stay aligned with industry trends and business goals.
+          </Item>
+          <Item heading="Wireframing & Prototyping" sub="Clarity • Design • Usability Testing">
+            Create wireframes to design draft versions of products using tools like Figma.
+            Work closely with UX designers to refine layouts and user flows. Develop
+            interactive prototypes and conduct usability testing to validate design
+            decisions. Use AI-powered tools to accelerate prototyping and improve design
+            efficiency.
+          </Item>
+          <Item heading="Project Management" sub="Planning • Coordination • Delivery">
+            Lead cross-functional teams by facilitating Scrum ceremonies and ensuring
+            smooth collaboration. Support team members in resolving challenges and
+            maintaining momentum. Communicate effectively with stakeholders and represent
+            the team in discussions. Ensure delivery aligns with planned roadmaps and
+            project goals.
+          </Item>
+          <Item heading="Technical Writing" sub="Documentation • Specifications • API Docs">
+            Create clear and structured product documentation for end users, including
+            detailed user flows and feature explanations. Develop SRS, and BRD documents
+            to support project clarity and alignment. Produce technical documentation such
+            as API documentations. Build and maintain documentation sites from scratch to
+            ensure easy access to product knowledge.
+          </Item>
+          <Item heading="Engineering Foundation" sub="Development • Database • Clean Code">
+            Strong background in frontend and backend development with solid expertise in
+            SQL and DBMS. This engineering foundation enables effective collaboration with
+            technical teams and ensures business solutions are technically sound and
+            scalable.
+          </Item>
+        </div>
+      </Section>
+
+      {/* Experience */}
+      <Section id="experience" title="Experience">
+        <Item
+          heading="Xeynergy™"
+          sub="Business Analyst / Design & Documentation Specialist"
+          meta="2025 Oct – Present"
+        >
+          Supporting a North American logistics product across Business Analysis, Project
+          Management, and Technical Writing. Managing sprint execution, maintaining
+          structured documentation, reviewing test cases, conducting testing sessions,
+          leveraging AI for task automation, and researching on tools & techniques to
+          optimize development workflows.
+        </Item>
+        <Item heading="Rootcode" sub="Intern Business Analyst" meta="2024 Sept – 2025 Sept">
+          Contributed to client projects in the Healthcare and Analytics domains within
+          the North American region, working in an Agile environment. Supported
+          requirement mapping, stakeholder coordination, documentation, and facilitated
+          SCRUM ceremonies. Collaborated with cross-functional teams to deliver features
+          on time and improve productivity.
+          <br />
+          <br />
+          Played the Business Analyst & Product Owner roles in Skapp that won Awards at
+          NBQSA 2025 and was also recognized at the Asia Pacific ICT Awards 2025.
+          Contributed to requirement analysis, roadmap definition, market research,
+          competitor analysis, and close collaboration with UX teams on wireframing and
+          usability testing. Leveraged tools such as Jira and GitHub Projects for
+          effective project tracking and visibility.
+        </Item>
+        <Item heading="LB Finance PLC" sub="Associate Software Engineer" meta="2024 Mar – 2024 Sept">
+          Worked as a Full-Stack Developer on Eclipse, the enterprise core system
+          supporting business operations. Contributed to the Deposit and General Ledger
+          modules using Angular and ASP.NET, while designing and optimizing SQL Server
+          procedures and queries. Collaborated within an Agile environment, conducted tech
+          talks, and supported intern engineers through knowledge-sharing sessions.
+        </Item>
+        <Item heading="LB Finance PLC" sub="Intern Software Engineer" meta="2023 Aug – 2024 Feb">
+          The very first experience in a <b>tech role!</b> Worked as an Intern Full-Stack
+          Developer on Eclipse, the core enterprise system supporting key business
+          operations. Developed frontend components using Angular and backend services
+          with ASP.NET, while designing SQL Server procedures and functions for efficient
+          data handling. Applied Clean Code and TDD practices within an Agile environment
+          and collaborated with cross-functional teams to deliver business-aligned
+          features.
+        </Item>
+      </Section>
+
+      {/* Education */}
+      <Section id="education" title="Education">
+        <Item
+          heading="BSc in Information Technology (Hons) – Specializing in SWE"
+          sub="Sri Lanka Institute of Information Technology (SLIIT)"
+          meta="2021 Jul – 2025 Jul"
+        >
+          Graduated with <b>Second Class Honours</b> from a four-year Software
+          Engineering degree program focused on designing and developing software systems.
+          Gained strong knowledge in programming, databases, and core software engineering
+          principles, supported by hands-on experience through academic and
+          industry-based projects.
+        </Item>
+        <Item heading="Advanced Level & Ordinary Level" sub="St. Peter's College, Colombo 04" meta="2006 – 2019">
+          Completed primary and secondary education from Grade 1 to Grade 13. Pursued
+          Advanced Level studies in the Physical Science stream. Actively participated in
+          extracurricular activities, contributing to teamwork, and overall personal
+          development.
+        </Item>
+      </Section>
+
+      {/* Blogs */}
+      <Section id="blogs" title="Blogs">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 -mt-2 mb-4">
+          I write about product thinking, business analysis, and the lessons I pick up along the way.
+          If any of it sounds useful, dive in.
+        </p>
+        {latestBlog && (
+          <Link href={`/blogs/${latestBlog.slug}`} className="block group">
+            <Card className="border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Latest post · {new Date(latestBlog.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="font-medium text-base sm:text-lg mb-2 group-hover:underline underline-offset-2">
+                  {latestBlog.title}
+                </h3>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  {latestBlog.description}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+        )}
+        <div className="mt-4">
           <Link
             href="/blogs"
-            className="flex items-center justify-between py-3 sm:py-4 border-t border-neutral-200 dark:border-neutral-800 group hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
+            className="inline-flex items-center justify-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black hover:opacity-90 transition"
           >
-            <div>
-              <div className="font-medium text-sm sm:text-base">Blogs</div>
-              {latestBlog && (
-                <div className="text-xs sm:text-sm text-neutral-500 mt-0.5">
-                  Thoughts, interests &amp; experiences
-                </div>
-              )}
-            </div>
-            <span className="text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors text-lg">→</span>
+            <PenLine className="w-4 h-4" />
+            View all blogs
+            <ArrowUpRight className="w-4 h-4" />
           </Link>
-        </nav>
-      </main>
+        </div>
+      </Section>
 
-      {/* Footer */}
-      <footer className="w-full max-w-5xl px-6 sm:px-10 py-6 flex flex-col items-center gap-3 text-xs text-neutral-400 dark:text-neutral-500">
-        <div className="flex items-center gap-5">
+      {/* Contact */}
+      <Section id="contact" title="Let's Connect!">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+          Whether you need a Business Analyst to translate business needs into clear
+          solutions, support product strategy, or collaborate on delivering meaningful
+          outcomes, I&apos;m always open to new opportunities.
+        </p>
+        <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+          <a
+            href="https://calendly.com/teshan-jayakodylk/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black hover:opacity-90 transition"
+          >
+            <CalendarDays className="w-4 h-4" />
+            Book a Meeting
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
+          <a
+            href="mailto:teshan@jayakodylk.com"
+            className="inline-flex items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+          >
+            <Mail className="w-4 h-4" />
+            Email me
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
           <a
             href="https://www.linkedin.com/in/teshanjayakody/"
             target="_blank"
             rel="noreferrer"
-            aria-label="LinkedIn"
-            className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+            className="inline-flex items-center gap-2 text-sm border px-4 py-2 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
           >
-            <LinkedInIcon />
-          </a>
-          <a
-            href="https://www.instagram.com/teshann_/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Instagram"
-            className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-          >
-            <InstagramIcon />
-          </a>
-          <a
-            href="https://x.com/TeshTweet20"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="X"
-            className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-          >
-            <XIcon />
+            <Linkedin className="w-4 h-4" />
+            Connect on LinkedIn
+            <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>
-        <span>© {new Date().getFullYear()} Teshan Jayakody</span>
+      </Section>
+
+      {/* Footer */}
+      <footer className="border-t border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-4xl mx-auto px-5 py-10 text-sm flex items-center justify-between">
+          <span>© {new Date().getFullYear()} Teshan Jayakody</span>
+          <a href="#top" className="text-xs underline underline-offset-4">
+            Back to top
+          </a>
+        </div>
       </footer>
     </div>
   );
