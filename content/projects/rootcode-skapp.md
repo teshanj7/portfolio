@@ -2,7 +2,7 @@
 title: "Skapp - Open Source Business Management Platform"
 description: "Played dual BA and Product Owner roles on Skapp, an open-source business management product that was recognized at NBQSA 2025 & Asia Pacific ICT Awards 2025."
 company: "Rootcode"
-role: "Inter Business Analyst / Product Owner"
+role: "Intern Business Analyst / Product Owner"
 period: "2024 Sept – 2025 Sept"
 tags: "Business Analysis, Product Ownership, UX Research, Agile, Competitor Analysis"
 thumbnail: ""
@@ -18,8 +18,6 @@ The product went on to win **[Asia Pacific ICT Awards 2025](https://rootcode.ai/
 
 
 ### The Context
-
-![Skapp Logo](/project-images/skapp.jpg "Skapp")
 
 Skapp was built in a competitive space where most HR tools are either too complex, too expensive, or too rigid for smaller teams. The product needed to be genuinely simple without sacrificing the features that actually matter to HR managers and employees. Getting that balance right required deep user understanding and proper roadmap with prioritization.
 
