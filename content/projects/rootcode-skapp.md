@@ -10,7 +10,7 @@ thumbnail: ""
 
 ### Overview
 
-Skapp is an open-source HR and leave management platform built to simplify people operations for organizations of any size. I played the combined role of Business Analyst and Product Owner throughout the product's active development phase owning the roadmap, defining requirements, and working closely with the UX and engineering teams to ship a product that was both usable and technically sound.
+Skapp is an open-source business management platform built to simplify people operations for organizations of any size. I played the combined role of Business Analyst and Product Owner throughout the product's active development phase owning the roadmap, defining requirements, and working closely with the UX and engineering teams to ship a product that was both usable and technically sound.
 
 ![Teshan working with Skapp](/project-images/rtc-image-2.jpg "RTC-2")
 
