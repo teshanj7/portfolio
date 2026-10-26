@@ -13,6 +13,7 @@ import { assetPath } from "@/utils/asset";
 import { MadridButton } from "@/components/MadridButton";
 import { Card, CardContent } from "@/components/card";
 import { getAllBlogs } from "@/utils/blogs";
+import { getAllProjects } from "@/utils/projects";
 
 export const metadata: Metadata = {
   title: "Teshan Jayakody",
@@ -107,6 +108,7 @@ const personJsonLd = {
 
 export default async function IndexPage() {
   const latestBlog = getAllBlogs()[0];
+  const projects = getAllProjects();
   return (
     <div className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-neutral-100">
       <script
@@ -129,6 +131,7 @@ export default async function IndexPage() {
             <a className="hover:opacity-70" href="#experience">Experience</a>
             <a className="hover:opacity-70" href="#education">Education</a>
             <a className="hover:opacity-70" href="#blogs">Blogs</a>
+            <a className="hover:opacity-70" href="#projects">Projects</a>
             <a className="hover:opacity-70" href="#contact">Connect</a>
           </nav>
           <ThemeToggle />
@@ -156,15 +159,15 @@ export default async function IndexPage() {
               Hi, I&apos;m Teshan.
             </h2>
             <p className="text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto md:mx-0 text-base sm:text-lg">
-              At the intersection of product, UX, and engineering — I help ideas
+              At the intersection of product, UX, and engineering, I help ideas
               become clear, usable, and real.
             </p>
             <ul className="list-disc text-left mx-auto md:mx-0 pl-5 mt-3 space-y-2 text-sm sm:text-base text-neutral-700 dark:text-neutral-300">
               <li>
-                <strong>2+ years</strong> of experience in tech.
+                <strong>3+ years</strong> of experience in tech.
               </li>
               <li>
-                Currently working as a Business Analyst @{" "}
+                Currently working as an Associate Business Analyst @{" "}
                 <a
                   href="https://www.xeynergy.com/"
                   target="_blank"
@@ -257,14 +260,14 @@ export default async function IndexPage() {
       <Section id="experience" title="Experience">
         <Item
           heading="Xeynergy™"
-          sub="Business Analyst / Design & Documentation Specialist"
+          sub="Associate Business Analyst"
           meta="2025 Oct – Present"
         >
-          Supporting a North American logistics product across Business Analysis, Project
-          Management, and Technical Writing. Managing sprint execution, maintaining
-          structured documentation, reviewing test cases, conducting testing sessions,
-          leveraging AI for task automation, and researching on tools & techniques to
-          optimize development workflows.
+          Contributing to a North American railway logistics product with Business Analysis, Project
+          Management, Technical Writing, and Process Improvements. Translating business needs into technical requirements and 
+          ensuring smooth project execution, managing sprint execution, maintaining structured documentation, 
+          reviewing test cases, conducting testing sessions, leveraging AI for task automation, and 
+          researching on tools & techniques to optimize development workflows.
         </Item>
         <Item heading="Rootcode" sub="Intern Business Analyst" meta="2024 Sept – 2025 Sept">
           Contributed to client projects in the Healthcare and Analytics domains within
@@ -357,6 +360,57 @@ export default async function IndexPage() {
           </Link>
         </div>
       </Section>
+
+      {/* Projects */}
+      {(() => {
+        const spotlight = projects.find((p) => p.company === "Personal") ?? projects[0];
+        if (!spotlight) return null;
+        return (
+          <Section id="projects" title="Projects">
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 -mt-2 mb-4">
+              Some insights on work I&apos;ve contributed to across business analysis, product ownership, and software engineering.
+            </p>
+            <Link href={`/projects/${spotlight.slug}`} className="block group">
+              <Card className="border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <span className="text-xs text-neutral-400 dark:text-neutral-500 block mb-1.5">
+                        {spotlight.period}
+                      </span>
+                      <h3 className="font-medium text-base sm:text-lg mb-2 group-hover:opacity-80 transition-opacity">
+                        {spotlight.title}
+                      </h3>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        {spotlight.description}
+                      </p>
+                      {spotlight.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                          {spotlight.tags.map((tag) => (
+                            <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors mt-1 shrink-0" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <div className="mt-4">
+              <Link
+                href="/projects"
+                className="inline-flex items-center justify-center gap-2 text-sm px-5 py-2.5 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black hover:opacity-90 transition"
+              >
+                View all projects
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </Section>
+        );
+      })()}
 
       {/* Contact */}
       <Section id="contact" title="Let's Connect!">
